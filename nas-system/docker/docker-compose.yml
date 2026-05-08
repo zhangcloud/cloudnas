@@ -1,0 +1,27 @@
+version: '3.9'
+services:
+  backend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.backend
+    ports:
+      - '8000:8000'
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./backend:/app
+      - cloudnas_data:/tmp/cloudnas_storage
+
+  frontend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.frontend
+    ports:
+      - '5173:5173'
+    environment:
+      - VITE_API_BASE=http://backend:8000/api/v1
+    volumes:
+      - ./frontend:/app
+
+volumes:
+  cloudnas_data:
